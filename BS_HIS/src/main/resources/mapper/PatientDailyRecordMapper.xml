@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.ujn.mapper.PatientDailyRecordMapper">
+
+    <resultMap id="patientDailyRecordMap" type="patientDailyRecord">
+        <id column="pdr_id" property="pdrId"/>
+        <result column="pdr_pat_id" property="pdrPatId"/>
+        <result column="pdr_temperature" property="pdrTemperature"/>
+        <result column="pdr_pulse" property="pdrPulse"/>
+        <result column="pdr_breathing" property="pdrBreathing"/>
+        <result column="pdr_systolic_pressure" property="pdrSystolicPressure"/>
+        <result column="pdr_diastolic_pressure" property="pdrDiastolicPressure"/>
+        <result column="pdr_recording_time" property="pdrRecordingTime"/>
+    </resultMap>
+
+    <select id="findDailyRecordsByPdrPatId" parameterType="java.lang.Integer" resultMap="patientDailyRecordMap">
+        select * from patient_daily_record
+        <where>
+            <if test="pdrPatId!=0">
+                and pdr_pat_id = #{pdrPatId}
+            </if>
+        </where>
+    </select>
+    
+
+</mapper>

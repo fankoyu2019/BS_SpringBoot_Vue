@@ -1,0 +1,35 @@
+#激活配置文件 ;需要指定其他的配置文件名称
+spring:
+  profiles:
+    active: abc,def
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bs_his?characterEncoding=utf-8
+    username: root
+    password: 123456
+
+#tomcat端口修改
+server:
+  port: 8009
+#日志记录级别
+logging:
+  level:
+    itheima: debug
+    org.springframework: info
+mybatis:
+  # 实体类别名包路径
+  type-aliases-package: edu.ujn.pojo
+  #  映射文件路径
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+jwt:
+  config:
+    key: userlogin
+    failureTime: 3600000
+
+#pagehelper分页插件设置
+pagehelper:
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql

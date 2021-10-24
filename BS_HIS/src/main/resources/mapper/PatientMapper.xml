@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.ujn.mapper.PatientMapper">
+
+    <resultMap id="patientMap" type="patient">
+        <id column="pat_id" property="patId"/>
+        <result column="pat_name" property="patName"/>
+        <result column="pat_age" property="patAge"/>
+        <result column="pat_sex" property="patSex"/>
+        <result column="pat_phone" property="patPhone"/>
+        <result column="pat_bed" property="patBed"/>
+        <result column="pat_remark" property="patRemark"/>
+        <result column="pat_doc_id" property="patDocId"/>
+        <result column="pat_in_time" property="patInTime"/>
+        <result column="pat_out_time" property="patOutTime"/>
+    </resultMap>
+
+    <select id="findPatientsByDocIdAndPatName" parameterType="patient" resultMap="patientMap">
+        select * from patient
+        <where>
+            <if test="patDocId!=0">
+                and pat_doc_id = #{patDocId}
+            </if>
+            <if test="patName!=null">
+                and pat_name like '%' #{patName} '%'
+            </if>
+            and pat_out_time IS NULL
+        </where>
+    </select>
+
+    <update id="updatePatientLeaveHospital" parameterType="patient">
+        update patient
+        SET pat_out_time = #{patOutTime}
+        where pat_id = #{patId}
+    </update>
+
+    <select id="findNowPatientsNumberByPatDocIdAndOutIsNULL" parameterType="int" resultType="int">
+        select count(*) FROM patient
+        <where>
+            and pat_doc_id = #{patDocId}
+            and pat_out_time IS NULL
+        </where>
+    </select>
+
+    <select id="findNewPatientsInNumber" parameterType="int" resultType="int">
+        select count(*) FROM patient
+        <where>
+            and pat_doc_id = #{patDocId}
+            and TO_DAYS(pat_in_time) = TO_DAYS(NOW())
+        </where>
+    </select>
+
+    <select id="findNewPatientsOutNumber" parameterType="int" resultType="int">
+        select count(*) FROM patient
+        <where>
+            and pat_doc_id = #{patDocId}
+            and TO_DAYS(pat_out_time) = TO_DAYS(NOW())
+        </where>
+    </select>
+</mapper>
