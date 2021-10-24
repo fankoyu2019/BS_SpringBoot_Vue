@@ -4,6 +4,7 @@ import numpy as np
 from sklearn import tree
 import joblib
 
+
 model = joblib.load('F://py//model.pkl')
 
 def predict(PatientInfoArray):
